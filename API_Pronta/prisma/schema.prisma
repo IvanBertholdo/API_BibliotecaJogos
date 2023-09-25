@@ -1,0 +1,36 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model jogo{
+  id String @id @default(uuid())
+  nome String
+  preco Decimal
+  genero genero @relation(fields:[genero_id],references: [id])
+  genero_id String
+  desenvolvedora desenvolvedora @relation(fields:[desenvolvedora_id],references: [id])
+  desenvolvedora_id String
+
+  @@map("Jogos")
+}
+
+model genero{
+  id String @id @default(uuid())
+  nome String @unique
+  jogos jogo[]
+
+  @@map("Gêneros")
+}
+
+model desenvolvedora{
+  id String @id @default(uuid()) 
+  nome String @unique
+  jogos jogo[]
+
+  @@map("Desenvolvedoras")
+}
